@@ -187,7 +187,7 @@
     
     /* Animasi pas beneran diklik (Mentul) */
     .feat.is-clicked {
-      transform: scale(0.92);
+      transform: scale(0.92) !important;
       background: rgba(255, 255, 255, 0.12);
       border-color: var(--accent1);
       box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
@@ -203,23 +203,39 @@
     .feat h3 { margin: 0; font-size: 16px; font-weight: 700; }
     .feat p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
 
-    /* --- MODAL POPUP & COPY --- */
+    /* === MODAL POPUP & COPY (DENGAN ANIMASI) === */
     .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; /* Ganti dari none ke flex */
+      visibility: hidden; /* Pakai visibility biar transisi kebaca */
+      pointer-events: none; /* Biar ga bisa diklik pas ngumpet */
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px);
       justify-content: center; align-items: center; padding: 20px; z-index: 1000;
-      opacity: 0; transition: opacity 0.3s ease;
+      opacity: 0; transition: opacity 0.4s ease, visibility 0.4s ease;
     }
-    .modal-overlay.active { display: flex; opacity: 1; }
+    
+    /* Saat Modal Aktif (Masuk) */
+    .modal-overlay.active { 
+      visibility: visible; 
+      opacity: 1; 
+      pointer-events: auto; 
+    }
 
     .modal-content {
       background: var(--card); width: 100%; max-width: 380px;
       padding: 30px 25px; border-radius: var(--radius); position: relative;
       text-align: center; border: 1px solid var(--stroke); box-shadow: var(--shadow);
-      transform: translateY(30px) scale(0.95); opacity: 0;
+      /* State awal pas ngumpet (ngecil di bawah) */
+      transform: translateY(50px) scale(0.85); 
+      opacity: 0;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .modal-overlay.active .modal-content { transform: translateY(0) scale(1); opacity: 1; }
+    
+    /* Animasi Pop-Up Modalnya (Mentul ke tengah) */
+    .modal-overlay.active .modal-content { 
+      transform: translateY(0) scale(1); 
+      opacity: 1; 
+    }
 
     .close-btn {
       position: absolute; top: 15px; right: 20px; font-size: 24px;
@@ -396,22 +412,18 @@
     const modalTitle = document.getElementById("modalTitle");
     const modalBody = document.getElementById("modalBody");
 
-    // Fungsi klik kartu biar kerasa animasinya dulu baru buka modal
     function handleCardClick(type, element) {
-      // Tambahin class mentul
       element.classList.add('is-clicked');
       
-      // Ilangin class mentul setelah animasi kelar
       setTimeout(() => {
         element.classList.remove('is-clicked');
       }, 300);
 
-      // Kasih jeda 180ms biar efek ripple & klik manjain mata dulu sebelum modal nutupin layar
       setTimeout(() => {
         modalTitle.innerHTML = paymentData[type].title;
         modalBody.innerHTML = paymentData[type].content;
         modal.classList.add('active'); 
-      }, 180);
+      }, 150);
     }
 
     function closeModal() {
@@ -424,7 +436,6 @@
       }
     }
 
-    // Fungsi Copy + Animasi Pop
     function copyText(elementId, btn) {
       const textToCopy = document.getElementById(elementId).innerText;
       const icon = btn.querySelector('i');
@@ -446,7 +457,6 @@
       });
     }
 
-    // Efek Ripple Air
     document.addEventListener('click', function(e) {
       const btn = e.target.closest('.ripple-trigger');
       if (!btn) return;

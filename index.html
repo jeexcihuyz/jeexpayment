@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Official Payment Jeex</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="grid"></div>
+    <div class="blob" style="top: -140px; left: -160px"></div>
+    <div class="blob b2" style="bottom: -180px; right: -170px"></div>
+
+    <main class="wrap">
+      <section class="card">
+        <div class="topbar">
+          <div class="brand">
+            <img
+              src="logo.png"
+              alt="Logo"
+              class="mark"
+              style="object-fit: cover; padding: 0"
+            />
+            <div>
+              <div>Jeex Payment</div>
+              <small>@gBrandalan</small>
+            </div>
+          </div>
+
+          <div class="pill" title="Status">
+            <span class="pulse" aria-hidden="true"></span>
+            <span>Online</span>
+          </div>
+        </div>
+
+        <div class="content">
+          <div>
+            <h1>Pilih Metode <span class="grad">Pembayaran</span></h1>
+            <p class="lead">
+              Silakan pilih metode pembayaran yang tersedia di bawah ini.
+            </p>
+
+            <div class="features">
+              <div class="feat" onclick="openModal('qris')">
+                <div class="ico" aria-hidden="true">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="url(#gg1)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                  </svg>
+                  <defs>
+                    <linearGradient
+                      id="gg1"
+                      x1="4"
+                      y1="4"
+                      x2="20"
+                      y2="20"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#00D4FF" />
+                      <stop offset="1" stop-color="#A855F7" />
+                    </linearGradient>
+                  </defs>
+                </div>
+                <div>
+                  <h3>QRIS All Payment</h3>
+                  <p>Scan otomatis dari semua E-Wallet & M-Banking.</p>
+                </div>
+              </div>
+
+              <div class="feat" onclick="openModal('ewallet')">
+                <div class="ico" aria-hidden="true">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="url(#gg2)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                    <path d="M18 12h2"></path>
+                  </svg>
+                  <defs>
+                    <linearGradient
+                      id="gg2"
+                      x1="6"
+                      y1="2"
+                      x2="18"
+                      y2="16"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#22C55E" />
+                      <stop offset="1" stop-color="#00D4FF" />
+                    </linearGradient>
+                  </defs>
+                </div>
+                <div>
+                  <h3>E-Wallet</h3>
+                  <p>Dana & GoPay.</p>
+                </div>
+              </div>
+
+              <div class="feat" onclick="openModal('bank')">
+                <div class="ico" aria-hidden="true">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="url(#gg4)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect
+                      x="3"
+                      y="4"
+                      width="18"
+                      height="16"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <defs>
+                    <linearGradient
+                      id="gg4"
+                      x1="11"
+                      y1="20"
+                      x2="13"
+                      y2="4"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#22C55E" />
+                      <stop offset="1" stop-color="#A855F7" />
+                    </linearGradient>
+                  </defs>
+                </div>
+                <div>
+                  <h3>Transfer Bank</h3>
+                  <p>SeaBank.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="paymentModal" class="modal-overlay">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle" class="grad" style="margin-bottom: 15px">Judul</h2>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

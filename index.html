@@ -1,183 +1,924 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Official Payment Jeex</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeex Payment - Official</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <style>
+        /* --- CSS SETUP & VARIABLES --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #120c24, #261852, #1a103c);
+            --card-bg: rgba(20, 16, 40, 0.75); 
+            --text-main: #ffffff;
+            --text-sub: #d1d5db;
+            --accent-color: #8b5cf6; 
+            --accent-hover: #7c3aed;
+            --accent-glow: rgba(139, 92, 246, 0.5);
+            --btn-bg: rgba(255, 255, 255, 0.08);
+            --btn-hover: rgba(255, 255, 255, 0.15);
+            --border-gradient: linear-gradient(45deg, #6d28d9, #8b5cf6);
+            --danger: #ef4444;
+            --chat-bg: #1e1e2e;
+            --chat-user: #8b5cf6;
+            --chat-bot: #2d2d3d;
+        }
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
+        /* Light Mode Variables */
+        body.light-mode {
+            --bg-gradient: linear-gradient(135deg, #f3e8ff, #e9d5ff, #ffffff);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1a1a1a;
+            --text-sub: #4b5563;
+            --accent-color: #7c3aed;
+            --accent-glow: rgba(124, 58, 237, 0.2);
+            --btn-bg: #ffffff;
+            --btn-hover: #f3f4f6;
+            --chat-bg: #ffffff;
+            --chat-user: #7c3aed;
+            --chat-bot: #f3f4f6;
+        }
 
-  <body>
-    <div class="grid"></div>
-    <div class="blob" style="top: -140px; left: -160px"></div>
-    <div class="blob b2" style="bottom: -180px; right: -170px"></div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    <main class="wrap">
-      <section class="card">
-        <div class="topbar">
-          <div class="brand">
-            <img
-              src="logo.png"
-              alt="Logo"
-              class="mark"
-              style="object-fit: cover; padding: 0"
-            />
-            <div>
-              <div>Jeex Payment</div>
-              <small>@gBrandalan</small>
-            </div>
-          </div>
+        body {
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.5s ease;
+        }
 
-          <div class="pill" title="Status">
-            <span class="pulse" aria-hidden="true"></span>
-            <span>Online</span>
-          </div>
-        </div>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        <div class="content">
-          <div>
-            <h1>Pilih Metode <span class="grad">Pembayaran</span></h1>
-            <p class="lead">
-              Silakan pilih metode pembayaran yang tersedia di bawah ini.
-            </p>
+        /* --- BACKGROUND PARTICLES --- */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-            <div class="features">
-              <div class="feat" onclick="openModal('qris')">
-                <div class="ico" aria-hidden="true">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="url(#gg1)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg>
-                  <defs>
-                    <linearGradient
-                      id="gg1"
-                      x1="4"
-                      y1="4"
-                      x2="20"
-                      y2="20"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stop-color="#00D4FF" />
-                      <stop offset="1" stop-color="#A855F7" />
-                    </linearGradient>
-                  </defs>
-                </div>
-                <div>
-                  <h3>QRIS All Payment</h3>
-                  <p>Scan otomatis dari semua E-Wallet & M-Banking.</p>
-                </div>
-              </div>
+        .floating-item {
+            position: absolute;
+            bottom: -100px;
+            color: var(--text-main);
+            font-size: 4rem;
+            opacity: 0.03; 
+            animation: floatUp linear infinite;
+        }
 
-              <div class="feat" onclick="openModal('ewallet')">
-                <div class="ico" aria-hidden="true">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="url(#gg2)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                    <path d="M18 12h2"></path>
-                  </svg>
-                  <defs>
-                    <linearGradient
-                      id="gg2"
-                      x1="6"
-                      y1="2"
-                      x2="18"
-                      y2="16"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stop-color="#22C55E" />
-                      <stop offset="1" stop-color="#00D4FF" />
-                    </linearGradient>
-                  </defs>
-                </div>
-                <div>
-                  <h3>E-Wallet</h3>
-                  <p>Dana & GoPay.</p>
-                </div>
-              </div>
+        .floating-item:nth-child(1) { left: 10%; animation-duration: 15s; font-size: 5rem; animation-delay: 0s; }
+        .floating-item:nth-child(2) { left: 25%; animation-duration: 20s; font-size: 3rem; animation-delay: 5s; }
+        .floating-item:nth-child(3) { left: 40%; animation-duration: 18s; font-size: 6rem; animation-delay: 2s; }
+        .floating-item:nth-child(4) { left: 60%; animation-duration: 22s; font-size: 4rem; animation-delay: 8s; }
+        .floating-item:nth-child(5) { left: 75%; animation-duration: 17s; font-size: 5.5rem; animation-delay: 3s; }
+        .floating-item:nth-child(6) { left: 90%; animation-duration: 25s; font-size: 3.5rem; animation-delay: 10s; }
 
-              <div class="feat" onclick="openModal('bank')">
-                <div class="ico" aria-hidden="true">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="url(#gg4)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <rect
-                      x="3"
-                      y="4"
-                      width="18"
-                      height="16"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                  </svg>
-                  <defs>
-                    <linearGradient
-                      id="gg4"
-                      x1="11"
-                      y1="20"
-                      x2="13"
-                      y2="4"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stop-color="#22C55E" />
-                      <stop offset="1" stop-color="#A855F7" />
-                    </linearGradient>
-                  </defs>
-                </div>
-                <div>
-                  <h3>Transfer Bank</h3>
-                  <p>SeaBank.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+            50% { opacity: 0.05; }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
 
-    <div id="paymentModal" class="modal-overlay">
-      <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle" class="grad" style="margin-bottom: 15px">Judul</h2>
-        <div id="modalBody"></div>
-      </div>
+        /* --- Main Container --- */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08); 
+            box-shadow: 0 0 60px rgba(0,0,0,0.6);
+            transition: background 0.3s ease;
+        }
+
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--border-gradient);
+            z-index: 11;
+            display: block;
+        }
+
+        /* --- Header / Top Bar --- */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-bottom: 30px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .icon-btn {
+            background: var(--btn-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-main);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+        
+        .icon-btn:hover { background: var(--accent-color); color: white; border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-glow); }
+        .icon-btn:active { transform: scale(0.92); }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px; right: -5px;
+            background-color: var(--danger);
+            color: white;
+            font-size: 10px;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid var(--card-bg);
+        }
+
+        /* --- NOTIFICATION DROPDOWN --- */
+        .notif-dropdown {
+            position: absolute;
+            top: 60px; right: 0;
+            width: 300px;
+            background: #1a103c; 
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            padding: 20px;
+            z-index: 99;
+            color: var(--text-main);
+            transform-origin: top right;
+            transform: scale(0);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notif-dropdown.active { transform: scale(1); opacity: 1; pointer-events: auto; }
+
+        .notif-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;
+            position: sticky; top: 0; z-index: 2; background: inherit;
+        }
+        .notif-header h4 { font-size: 16px; font-weight: 700; }
+        .notif-header .clear-all { font-size: 12px; color: var(--danger); cursor: pointer; font-weight: 600; }
+
+        .notif-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); animation: fadeIn 0.3s ease; }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-icon {
+            background: rgba(255,255,255,0.1); width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--text-main); font-size: 14px; flex-shrink: 0;
+        }
+        .notif-content p { font-size: 13px; font-weight: 500; color: var(--text-main); line-height: 1.4; margin-bottom: 2px; }
+        .notif-content span { font-size: 11px; color: var(--text-sub); }
+        .empty-state { text-align: center; color: var(--text-sub); font-size: 12px; padding: 20px 0; }
+
+        /* --- Profile Section --- */
+        .profile-section { text-align: center; margin-bottom: 40px; animation: slideDown 0.8s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .avatar-container { position: relative; display: inline-block; margin-bottom: 15px; }
+        .avatar { 
+            width: 120px; height: 120px; 
+            border-radius: 50%; 
+            border: 4px solid rgba(255,255,255,0.15); 
+            object-fit: cover; 
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3); 
+            transition: transform 0.3s;
+        }
+        .avatar:hover { transform: scale(1.05) rotate(5deg); }
+
+        .verified-badge { 
+            position: absolute; bottom: 5px; right: 5px; 
+            background: var(--accent-color); color: white; 
+            width: 28px; height: 28px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            border: 3px solid #1a103c; font-size: 14px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .username { 
+            font-size: 32px; font-weight: 700; margin-bottom: 2px; 
+            letter-spacing: 0.5px; 
+            background: linear-gradient(to right, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; 
+        }
+        body.light-mode .username {
+             background: linear-gradient(to right, #1a1a1a, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .handle { font-size: 16px; color: var(--text-sub); font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 15px; }
+        .handle i { color: var(--accent-color); }
+        .description { font-size: 14px; color: var(--text-sub); margin: 0 auto; max-width: 90%; line-height: 1.6; font-weight: 300; }
+
+        /* --- Buttons --- */
+        .payment-methods { display: flex; flex-direction: column; gap: 15px; animation: slideUp 0.8s ease-out 0.2s backwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .pay-btn {
+            background: var(--btn-bg); 
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 18px;
+            border-radius: 18px; 
+            font-size: 16px;
+            font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .pay-btn i { font-size: 22px; color: var(--accent-color); transition: color 0.3s; }
+        
+        .pay-btn:hover { 
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.25); 
+            background: var(--btn-hover); 
+            transform: translateY(-3px);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        .pay-btn:active { transform: scale(0.98); }
+
+        .ripple {
+            position: absolute; background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0); animation: rippleAnim 0.6s linear; pointer-events: none;
+        }
+        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+        /* --- MODAL POPUP --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); 
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-box {
+            background: linear-gradient(145deg, #1e1538, #2d1b5e);
+            color: var(--text-main); 
+            width: 100%; max-width: 380px;
+            border-radius: 24px; padding: 25px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.08);
+            transform: translateY(30px) scale(0.95); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal-box { transform: translateY(0) scale(1); opacity: 1; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .modal-header h3 { font-size: 1.25rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
+        .close-icon { font-size: 1.5rem; color: var(--text-sub); cursor: pointer; padding: 5px; transition: color 0.3s; }
+        .close-icon:hover { color: var(--danger); transform: rotate(90deg); }
+        
+        .payment-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+        
+        .payment-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+        .payment-item:hover { background: rgba(255,255,255,0.08); }
+        
+        .pay-info-text .pay-name { font-weight: 700; font-size: 1.1rem; color: var(--text-main); margin-bottom: 4px; }
+        .pay-info-text .pay-number { font-size: 0.95rem; color: var(--text-sub); font-family: 'Poppins', monospace; opacity: 0.8; }
+
+        .copy-btn-dark {
+            background: var(--accent-color); 
+            color: white; 
+            border: none; 
+            width: 48px; height: 48px; 
+            border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.3rem; 
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            position: relative; overflow: hidden;
+        }
+        .copy-btn-dark:hover { box-shadow: 0 0 15px var(--accent-glow); background: var(--accent-hover); }
+        
+        .pop-anim { animation: clickPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes clickPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.8); }
+            100% { transform: scale(1.1); }
+        }
+        
+        .selesai-btn { 
+            width: 100%; padding: 16px; font-size: 1.1rem; 
+            background: #ffffff; color: #000000; 
+            border: none; border-radius: 16px; cursor: pointer; font-weight: 700; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .selesai-btn:hover { box-shadow: 0 8px 25px rgba(255,255,255,0.15); transform: translateY(-2px); }
+        .selesai-btn:active { transform: scale(0.98); }
+        
+        .qr-container { width: 100%; display: flex; justify-content: center; margin-bottom: 20px; }
+        .qr-image { 
+            width: 100%; max-width: 250px; height: auto; 
+            border-radius: 15px; border: 4px solid var(--text-main); 
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .hidden-section { display: none; }
+
+        /* --- CHAT BOT STYLES --- */
+        .chat-widget {
+            position: fixed; bottom: 20px; right: 20px; z-index: 2000;
+            display: flex; flex-direction: column; align-items: flex-end;
+        }
+
+        .chat-bubble {
+            width: 60px; height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px var(--accent-glow);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: white; font-size: 28px;
+            border: 2px solid rgba(255,255,255,0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            70% { box-shadow: 0 0 0 15px rgba(168, 85, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+
+        .chat-bubble:hover { transform: scale(1.1); animation: none; }
+        .chat-bubble:active { transform: scale(0.9); }
+
+        .chat-window {
+            width: 340px; height: 500px;
+            background: var(--chat-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 15px;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            transform-origin: bottom right;
+            transform: scale(0); opacity: 0;
+            transition: all 0.3s ease;
+            position: absolute; bottom: 70px; right: 0;
+            pointer-events: none;
+        }
+
+        .chat-window.active { transform: scale(1); opacity: 1; pointer-events: auto; }
+
+        .chat-header {
+            background: var(--accent-color);
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .chat-header-info { display: flex; align-items: center; gap: 10px; color: white; }
+        .chat-title { font-size: 16px; font-weight: 600; color: white; }
+        .chat-close { cursor: pointer; color: rgba(255,255,255,0.8); font-size: 20px; }
+        .chat-close:hover { color: white; }
+
+        .chat-body {
+            flex: 1; padding: 15px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 12px;
+            background: var(--chat-bg);
+        }
+
+        .message {
+            max-width: 85%; padding: 12px 16px; border-radius: 12px;
+            font-size: 13px; line-height: 1.5; word-wrap: break-word;
+        }
+        .message.bot { align-self: flex-start; background: var(--chat-bot); color: var(--text-main); border-bottom-left-radius: 2px; }
+        .message.user { align-self: flex-end; background: var(--chat-user); color: white; border-bottom-right-radius: 2px; }
+        .message a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
+        .message.user a { color: white; text-decoration: underline; }
+
+        .chat-options-area {
+            padding: 15px; background: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; gap: 8px;
+        }
+
+        .options-label { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .option-chips-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+
+        .option-chip {
+            background: transparent; color: var(--text-main);
+            border: 1px solid var(--accent-color);
+            padding: 10px 5px; border-radius: 20px;
+            font-size: 11px; cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%;
+        }
+
+        .option-chip:hover { background: var(--accent-color); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px var(--accent-glow); }
+        .option-chip:active { transform: scale(0.95); }
+
+        .typing-indicator {
+            display: none; align-self: flex-start; background: var(--chat-bot);
+            padding: 10px 14px; border-radius: 12px; border-bottom-left-radius: 2px; gap: 4px;
+        }
+        .typing-dot { width: 6px; height: 6px; background: var(--text-sub); border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* Media Queries */
+        @media (min-width: 480px) {
+            .app-container { border-radius: 30px; min-height: auto; height: 850px; overflow-y: auto; border: none; }
+            .chat-widget { right: 30px; bottom: 30px; }
+        }
+        @media (max-width: 400px) {
+            .chat-window { width: 300px; height: 450px; bottom: 65px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <i class="ri-money-dollar-circle-line floating-item"></i>
+        <i class="ri-shield-star-line floating-item"></i>
+        <i class="ri-vip-diamond-line floating-item"></i>
+        <i class="ri-wallet-3-line floating-item"></i>
+        <i class="ri-shopping-bag-3-line floating-item"></i>
+        <i class="ri-trophy-line floating-item"></i>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <div class="app-container">
+        <div class="top-bar">
+            <button class="icon-btn" id="notifBtn">
+                <i class="ri-notification-3-line"></i>
+                <div class="notification-badge" id="notifBadge">0</div>
+            </button>
+
+            <div class="notif-dropdown" id="notifDropdown">
+                <div class="notif-header">
+                    <h4>Histori Aktivitas</h4>
+                    <span class="clear-all" id="clearNotif">Hapus Semua</span>
+                </div>
+                <div class="notif-list" id="notifList">
+                    <div class="empty-state">Belum ada aktivitas baru.</div>
+                </div>
+            </div>
+            
+            <button class="icon-btn" id="themeToggleBtn">
+                <i class="ri-sun-line" id="themeIcon"></i>
+            </button>
+        </div>
+
+        <div class="profile-section">
+            <div class="avatar-container">
+                <img src="logo.png" alt="Profile" class="avatar">
+                <div class="verified-badge"><i class="ri-check-fill"></i></div>
+            </div>
+            <h1 class="username">Jeex Payment</h1>
+            <div class="handle">@gBrandalan <i class="ri-verified-badge-fill"></i></div>
+            
+            <p class="description">Silakan pilih metode pembayaran yang tersedia di bawah ini.</p>
+        </div>
+
+        <div class="payment-methods">
+            <button class="pay-btn ripple-trigger" id="btnQris">
+                <i class="ri-qr-scan-2-line"></i><span>QRIS All Payment </span>
+            </button>
+            
+            <button class="pay-btn ripple-trigger" id="btnEwallet">
+                <i class="ri-wallet-3-fill"></i><span>E-Wallet</span>
+            </button>
+            
+            <button class="pay-btn ripple-trigger" id="btnBank">
+                <i class="ri-bank-card-fill"></i><span>Transfer Bank</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">METODE PEMBAYARAN</h3>
+                <i class="ri-close-line close-icon" id="closeModalIcon"></i>
+            </div>
+            
+            <div class="payment-list">
+                
+                <div id="section-qris" class="hidden-section">
+                    <div class="qr-container">
+                        <img src="qris.jpg" alt="QRIS" class="qr-image">
+                    </div>
+                    <p style="text-align: center; font-size: 13px; color: var(--text-sub);">Scan atau Screenshot QRIS di atas untuk melakukan pembayaran.</p>
+                </div>
+
+                <div id="section-ewallet" class="hidden-section">
+                    <div class="payment-item">
+                        <div class="pay-info-text">
+                            <p class="pay-name">DANA</p>
+                            <p class="pay-number" id="numDana">083135825844</p>
+                            <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">a.n. A J</p>
+                        </div>
+                        <button class="copy-btn-dark ripple-trigger js-copy-btn" data-clipboard-target="#numDana" data-log-name="DANA">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
+                    <div class="payment-item">
+                        <div class="pay-info-text">
+                            <p class="pay-name">GOPAY</p>
+                            <p class="pay-number" id="numGopay">083135825844</p>
+                            <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">a.n. A J</p>
+                        </div>
+                        <button class="copy-btn-dark ripple-trigger js-copy-btn" data-clipboard-target="#numGopay" data-log-name="GOPAY">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="section-bank" class="hidden-section">
+                    <div class="payment-item">
+                        <div class="pay-info-text">
+                            <p class="pay-name">SeaBank</p>
+                            <p class="pay-number" id="numSeabank">901901891501</p>
+                            <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">a.n. A J</p>
+                        </div>
+                        <button class="copy-btn-dark ripple-trigger js-copy-btn" data-clipboard-target="#numSeabank" data-log-name="SeaBank">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="selesai-btn ripple-trigger" id="selesaiBtn">
+                Tutup Jendela
+            </button>
+        </div>
+    </div>
+
+    <div class="chat-widget">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <i class="ri-robot-2-fill"></i>
+                    <span class="chat-title">Bantuan Jeex Payment</span>
+                </div>
+                <i class="ri-close-line chat-close" id="closeChatBtn"></i>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="chat-options-area">
+                <p class="options-label">Pilih Topik</p>
+                <div class="option-chips-container" id="chipsContainer">
+                </div>
+            </div>
+        </div>
+        
+        <button class="chat-bubble" id="toggleChatBtn">
+            <i class="ri-message-3-line"></i>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const modal = document.getElementById('paymentModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const closeIcon = document.getElementById('closeModalIcon');
+            const selesaiBtn = document.getElementById('selesaiBtn');
+            const copyButtons = document.querySelectorAll('.js-copy-btn');
+            const rippleTriggers = document.querySelectorAll('.ripple-trigger');
+            
+            // Buttons
+            const btnQris = document.getElementById('btnQris');
+            const btnEwallet = document.getElementById('btnEwallet');
+            const btnBank = document.getElementById('btnBank');
+            
+            // Theme Elements
+            const themeBtn = document.getElementById('themeToggleBtn');
+            const themeIcon = document.getElementById('themeIcon');
+            const body = document.body;
+
+            // Sections
+            const secQris = document.getElementById('section-qris');
+            const secEwallet = document.getElementById('section-ewallet');
+            const secBank = document.getElementById('section-bank');
+            const allSections = [secQris, secEwallet, secBank];
+
+            // Notification Elements
+            const notifBtn = document.getElementById('notifBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+            const clearNotif = document.getElementById('clearNotif');
+            const notifList = document.getElementById('notifList');
+            const notifBadge = document.getElementById('notifBadge');
+
+            // --- THEME TOGGLE LOGIC ---
+            let isDarkMode = true;
+            themeBtn.addEventListener('click', () => {
+                isDarkMode = !isDarkMode;
+                if(isDarkMode) {
+                    body.classList.remove('light-mode');
+                    themeIcon.className = 'ri-sun-line';
+                } else {
+                    body.classList.add('light-mode');
+                    themeIcon.className = 'ri-moon-line';
+                }
+            });
+
+            // --- REALTIME ACTIVITY LOGIC (STORAGE) ---
+            let activityData = JSON.parse(localStorage.getItem('jeexPaymentActivity')) || [];
+
+            function getCurrentTime() {
+                const now = new Date();
+                return now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
+            }
+
+            function renderActivities() {
+                notifList.innerHTML = ''; 
+
+                if (activityData.length === 0) {
+                    notifList.innerHTML = '<div class="empty-state">Belum ada aktivitas.</div>';
+                    notifBadge.style.display = 'none';
+                    return;
+                }
+
+                notifBadge.style.display = 'flex';
+                notifBadge.innerText = activityData.length;
+
+                activityData.slice().reverse().forEach(item => {
+                    const html = `
+                        <div class="notif-item">
+                            <div class="notif-icon"><i class="${item.icon}"></i></div>
+                            <div class="notif-content">
+                                <p>${item.text}</p>
+                                <span>${item.time}</span>
+                            </div>
+                        </div>
+                    `;
+                    notifList.innerHTML += html;
+                });
+            }
+
+            function addActivity(text, iconClass) {
+                const newActivity = {
+                    text: text,
+                    icon: iconClass,
+                    time: getCurrentTime()
+                };
+                activityData.push(newActivity);
+                localStorage.setItem('jeexPaymentActivity', JSON.stringify(activityData));
+                renderActivities();
+            }
+
+            renderActivities();
+
+            clearNotif.addEventListener('click', () => {
+                activityData = [];
+                localStorage.removeItem('jeexPaymentActivity');
+                renderActivities();
+            });
+
+            // --- FUNCTION: Open Modal with Specific Content ---
+            function openModal(type) {
+                allSections.forEach(sec => sec.classList.add('hidden-section'));
+
+                if (type === 'qris') {
+                    secQris.classList.remove('hidden-section');
+                    modalTitle.innerText = "SCAN QRIS";
+                    addActivity('Membuka menu QRIS', 'ri-qr-scan-2-line'); 
+                } else if (type === 'ewallet') {
+                    secEwallet.classList.remove('hidden-section');
+                    modalTitle.innerText = "E-WALLET";
+                    addActivity('Melihat metode E-Wallet', 'ri-wallet-3-fill'); 
+                } else if (type === 'bank') {
+                    secBank.classList.remove('hidden-section');
+                    modalTitle.innerText = "TRANSFER BANK";
+                    addActivity('Melihat metode Bank', 'ri-bank-card-fill'); 
+                } 
+
+                modal.classList.add('active');
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+            }
+
+            // --- Event Listeners Payment Buttons ---
+            btnQris.addEventListener('click', () => openModal('qris'));
+            btnEwallet.addEventListener('click', () => openModal('ewallet'));
+            btnBank.addEventListener('click', () => openModal('bank'));
+            
+            closeIcon.addEventListener('click', closeModal);
+            selesaiBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // --- NOTIFICATION UI ---
+            notifBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                notifDropdown.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
+                    notifDropdown.classList.remove('active');
+                }
+            });
+
+            // --- Copy Functionality & Logging ---
+            copyButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-clipboard-target');
+                    const textToCopy = document.querySelector(targetId).innerText;
+                    const logName = this.getAttribute('data-log-name'); 
+                    const icon = this.querySelector('i');
+                    const originalIconClass = icon.className;
+
+                    // Trigger Copy
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        this.classList.add('pop-anim');
+                        
+                        // Change Icon
+                        icon.className = "ri-check-line";
+                        
+                        // Hapus animasi & reset icon setelah delay
+                        setTimeout(() => {
+                            icon.className = originalIconClass;
+                            this.classList.remove('pop-anim');
+                        }, 1500);
+
+                        addActivity(`Menyalin nomor ${logName}`, 'ri-file-copy-line');
+                    }).catch(err => {
+                        console.error('Gagal: ', err);
+                    });
+                });
+            });
+
+            // --- Ripple Animation ---
+            rippleTriggers.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const existingRipple = this.querySelector('.ripple');
+                    if (existingRipple) { existingRipple.remove(); }
+                    const circle = document.createElement('span');
+                    const diameter = Math.max(this.clientWidth, this.clientHeight);
+                    const radius = diameter / 2;
+                    const rect = this.getBoundingClientRect();
+                    circle.style.width = circle.style.height = `${diameter}px`;
+                    circle.style.left = `${e.clientX - rect.left - radius}px`;
+                    circle.style.top = `${e.clientY - rect.top - radius}px`;
+                    circle.classList.add('ripple');
+                    this.appendChild(circle);
+                });
+            });
+
+            // --- CHATBOT LOGIC ---
+            const toggleChatBtn = document.getElementById('toggleChatBtn');
+            const chatWindow = document.getElementById('chatWindow');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+            const chatBody = document.getElementById('chatBody');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const chipsContainer = document.getElementById('chipsContainer');
+            
+            let isChatOpen = false;
+            let isFirstOpen = true; 
+
+            // DATA PERTANYAAN & JAWABAN
+            const faqData = [
+                {
+                    id: 'channel_telegram',
+                    label: 'Info Telegram',
+                    icon: 'ri-telegram-line',
+                    answer: 'Hubungi Admin via Telegram jika ada pertanyaan lebih lanjut!\n\nKlik link di bawah:\n<a href="https://t.me/gBrandalan" target="_blank">Chat @gBrandalan</a>'
+                },
+                {
+                    id: 'konfirmasi',
+                    label: 'Cara Konfirmasi',
+                    icon: 'ri-check-double-line',
+                    answer: 'Sudah transfer? Jangan lupa kirim bukti screenshot pembayaran ke Telegram Admin agar pesanan segera diproses ya.'
+                },
+                {
+                    id: 'admin',
+                    label: 'Kontak Admin',
+                    icon: 'ri-customer-service-2-line',
+                    answer: 'Hubungi Admin jika ada kendala:\n\nTelegram: <a href="https://t.me/gBrandalan" target="_blank">@gBrandalan</a>'
+                },
+                {
+                    id: 'jam_op',
+                    label: 'Jam Operasional',
+                    icon: 'ri-time-line',
+                    answer: 'Kami online setiap hari. Silakan langsung chat Admin di Telegram untuk *fast response*.'
+                }
+            ];
+
+            function renderChips() {
+                chipsContainer.innerHTML = '';
+                faqData.forEach(item => {
+                    const chip = document.createElement('div');
+                    chip.className = 'option-chip';
+                    chip.innerHTML = `<i class="${item.icon}"></i> ${item.label}`;
+                    chip.onclick = () => handleChipClick(item);
+                    chipsContainer.appendChild(chip);
+                });
+            }
+
+            function toggleChat() {
+                isChatOpen = !isChatOpen;
+                if (isChatOpen) {
+                    chatWindow.classList.add('active');
+                    toggleChatBtn.style.transform = 'scale(0)';
+                    if (isFirstOpen) {
+                        sendInitialGreeting();
+                        renderChips();
+                        isFirstOpen = false;
+                    }
+                } else {
+                    chatWindow.classList.remove('active');
+                    toggleChatBtn.style.transform = 'scale(1)';
+                }
+            }
+
+            toggleChatBtn.addEventListener('click', toggleChat);
+            closeChatBtn.addEventListener('click', toggleChat);
+
+            function appendMessage(text, sender) {
+                const msgDiv = document.createElement('div');
+                msgDiv.classList.add('message', sender);
+                msgDiv.innerHTML = text; 
+                chatBody.insertBefore(msgDiv, typingIndicator);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            function sendInitialGreeting() {
+                const greeting = "Halo! Selamat datang di Jeex Payment Helper 🤗\nAda yang bisa dibantu? Silakan pilih menu di bawah.";
+                appendMessage(greeting, 'bot');
+            }
+
+            function handleChipClick(item) {
+                appendMessage(item.label, 'user');
+                typingIndicator.style.display = 'flex';
+                chatBody.scrollTop = chatBody.scrollHeight;
+                setTimeout(() => {
+                    typingIndicator.style.display = 'none';
+                    appendMessage(item.answer, 'bot');
+                }, 600);
+            }
+        });
+    </script>
+</body>
 </html>
